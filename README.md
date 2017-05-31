@@ -18,4 +18,5 @@ WASD或者方向键控制上下左右
 3. 因为这个只是final project的一小部分所以我只加了几个单词作为测试：apple, bananas, bad, cat, bob, flying, god, dad, f-word
 4. 完整版本将在之后释出
 
-## ** 更新于2017.5.31
+
+** 更新于2017.5.31
