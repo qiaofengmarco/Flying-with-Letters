@@ -1,6 +1,6 @@
 # Flying-with-Letters
 
-![image](https://github.com/qiaofengmarco/Flying-with-Letters/ui-description.png)
+![image](https://github.com/qiaofengmarco/Flying-with-Letters/origin/master/ui-description.png)
 
 简单地说明一下：
 
