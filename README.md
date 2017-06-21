@@ -16,7 +16,10 @@ WASD或者方向键控制上下左右
 1. jar文件可以直接打开执行
 2. GameFrame.java为主界面文件，GamePanel.java为主游戏panel，其它为辅助的panel
 3. 因为这个只是final project的一小部分所以我只加了几个单词作为测试：apple, bananas, bad, cat, bob, flying, god, dad, f-word
-4. 完整版本将在之后释出
 
+## 6.21更新：
+1. 更新了在游戏结束后显示记分牌和最高分
+2. 重写了control部分，使按键响应更快
+3. 重写了部分游戏逻辑
 
-**更新于2017.5.31**
+**更新于2017.6.21**
