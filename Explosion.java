@@ -11,7 +11,7 @@ public class Explosion
 	{
 		x = X;
 		y = Y;
-		life_time  = 10;
+		life_time  = 8;
 	}
 }
 	

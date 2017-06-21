@@ -15,6 +15,7 @@ public class GameFrame
 	public TimePanel tp;
 	public JPanel big, top;
 	public boolean pause = false;
+	public Timer timer;
 	public static void main(String[] args)
 	{
 		gf = new GameFrame();
@@ -58,7 +59,7 @@ public class GameFrame
 		big.add(gp);
 		big.add(top);
 		container.add(big);
-		Timer timer = new Timer();
+		timer = new Timer();
 		timer.schedule(tp, 0, 1000);
 		player = new Player(container.getWidth() / 2 -  150 / 2, container.getHeight() - 180);
 		repaint = new RepaintThread();

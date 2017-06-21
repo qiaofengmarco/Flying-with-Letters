@@ -39,7 +39,11 @@ public class TimePanel extends TimerTask
 				second_counter = 59;
 			}
 			else
+			{
 				GameFrame.gf.pause = true;
+				GameFrame.gf.timer.cancel();
+				GameFrame.gf.gp.removekeys();
+			}
 		}
 		else
 			second_counter--;

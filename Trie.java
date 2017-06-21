@@ -1,17 +1,20 @@
-class TrieNode {
+class TrieNode 
+{
     TrieNode[] arr;
     public boolean isEnd;
     // Initialize your data structure here.
-    public TrieNode() {
+    public TrieNode() 
+	{
         this.arr = new TrieNode[26];
-    }
- 
+    } 
 }
  
-public class Trie {
+public class Trie 
+{
     private TrieNode root;
 	private TrieNode searchingNode;
-    public Trie() {
+    public Trie() 
+	{
         root = new TrieNode();
     }
  
@@ -34,7 +37,7 @@ public class Trie {
 			else
                 p = p.arr[index];
         }
-        p.isEnd=true;
+        p.isEnd = true;
     }
  
     // Returns if the word is in the trie.
@@ -83,18 +86,17 @@ public class Trie {
 		if (searchingNode == null)
 			searchingNode = root;
 		if (searchingNode.arr[index] != null)
+		{
 			searchingNode = searchingNode.arr[index];
-		else
-		{
-			searchingNode = root;
-			return -1;
+			if (searchingNode.isEnd)
+			{
+				searchingNode = root;			
+				return 1;
+			}
+			return 0;
 		}
-		if (searchingNode.isEnd)
-		{
-			searchingNode = root;			
-			return 1;
-		}
-		return 0;
+		searchingNode = root;
+		return -1;
 	}
 	public String possibleNext()
 	{

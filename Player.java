@@ -1,7 +1,7 @@
 import java.util.*;
 public class Player
 {
-	public int x, y, width = 150, length = 120, speed = 18;
+	public int x, y, width = 150, length = 120, speed = 4;
 	public ArrayList<Bullet> bullets;
 	public Player()
 	{
@@ -17,8 +17,8 @@ public class Player
 	}
 	public boolean eat(Target t)
 	{
-		int mid_x = x + width / 2;
-		int mid_y = y + length / 2;
+		int mid_x = x + width / 2, mid_y = y + length / 2;
+		
 		if ((mid_x >= t.x) && (mid_x <= t.x + t.width) && (mid_y >= t.y) && (mid_y <= t.y + t.length))
 			return true;
 		return false;
