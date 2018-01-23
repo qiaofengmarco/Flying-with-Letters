@@ -2,24 +2,25 @@
 
 ![image](https://github.com/qiaofengmarco/Flying-with-Letters/raw/master/ui-description.png)
 
-简单地说明一下：
+## Control:
+WASD(or Arrow Keys): Moving the Dragon
+SPACE: Launch fireballs
 
-## 控制
-WASD或者方向键控制上下左右
-空格键发射火球
+## Rules:
+1. Get 10 if a fireball hit a letter.
+2. Eat: If the Dragon hits a letter, the letter will be counted and a spelling process begins. Plus, if you spell the word right, you will get points equalling to 5 muliplying the length of the word spelt. 
 
-## 机制
-1. 火球命中字母得10分
-2. 不发射火球并撞向字母算作“吃”，吃对一个单词得分为单词长度 * 5，吃错不得分（虽然会暂时加上每吃中一个的5分，但是吃错就会清空这个累加的值）
+## Additonal Tips：
+1. .jar file can be executed in Windows.
+2. GameFrame.java is the main UI design file, GamePanel.java is the main game panel.
+3. And because the game comes from a small part of my final project, so few words are added: apple, bananas, bad, cat, bob, flying, god, dad, f-word.
 
-## 补充说明部分：
-1. jar文件可以直接打开执行
-2. GameFrame.java为主界面文件，GamePanel.java为主游戏panel，其它为辅助的panel
-3. 因为这个只是final project的一小部分所以我只加了几个单词作为测试：apple, bananas, bad, cat, bob, flying, god, dad, f-word
+## Update at 2017.6.21:
+1. Update the score board
+2. Rewrite the control logic for a quick response from keyboard.
+3. Rewrite some of the game logic.
 
-## 6.21更新：
-1. 更新了在游戏结束后显示记分牌和最高分
-2. 重写了control部分，使按键响应更快
-3. 重写了部分游戏逻辑
+## Update at 2018.1.23:
+1. Translate README.MD into English version.
 
-**更新于2017.6.21**
+## Last update at 2018.1.23
