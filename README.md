@@ -3,8 +3,8 @@
 ![image](https://github.com/qiaofengmarco/Flying-with-Letters/raw/master/ui-description.png)
 
 ## Control:
-WASD(or Arrow Keys): Moving the Dragon
-SPACE: Launch fireballs
+- WASD(or Arrow Keys): Moving the Dragon
+- SPACE: Launch fireballs
 
 ## Rules:
 1. Get 10 if a fireball hit a letter.
