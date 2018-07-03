@@ -8,7 +8,7 @@
 
 ## Rules:
 1. Eat: If the Dragon impact a letter, the letter will be counted and a spelling process begins. Plus, if you spell the word right, you will get points equalling to 5 muliplying the length of the word spelt. 
-2. Bomb: If the Dragon impact a bomb or a fireball hit a bomb, the spelling process will be clear. 
+2. Bomb: If the Dragon impact a bomb or a fireball hit a bomb, the spelling bar and the letters on the screen will be cleared. 
 
 ## Additional Tips：
 1. .jar file can be executed in Windows.
