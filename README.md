@@ -8,7 +8,7 @@
 
 ## Rules:
 1. Eat: If the Dragon impact a letter, the letter will be counted and a spelling process begins. Plus, if you spell the word right, you will get points equalling to 5 muliplying the length of the word spelt. 
-2. Bomb: If the Dragon impact a bomb or a fireball hit a bomb, the spelling bar and the letters on the screen will be cleared. 
+2. Bomb: If the Dragon impact a bomb or a fireball hits a bomb, the spelling bar and the letters on the screen will be cleared. 
 
 ## Additional Tips：
 1. The portal of codes (i.e. main function) is in GameFrame.java. 
