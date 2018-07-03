@@ -4,11 +4,11 @@
 
 ## Control:
 - WASD(or Arrow Keys): Moving the Dragon
-- SPACE: Launch fireballs
+- SPACE: Launch fireballs (You won't get any bonus if the fireballs hit some letters.)
 
 ## Rules:
-1. Get 10 if a fireball hit a letter.
-2. Eat: If the Dragon hits a letter, the letter will be counted and a spelling process begins. Plus, if you spell the word right, you will get points equalling to 5 muliplying the length of the word spelt. 
+1. Eat: If the Dragon impact a letter, the letter will be counted and a spelling process begins. Plus, if you spell the word right, you will get points equalling to 5 muliplying the length of the word spelt. 
+2. Bomb: If the Dragon impact a bomb or a fireball hit a bomb, the spelling process will be clear. 
 
 ## Additional Tips：
 1. .jar file can be executed in Windows.
@@ -23,4 +23,7 @@
 ## Update at 2018.1.23:
 1. Translate README.MD into English version.
 
-## Last update at 2018.1.23
+## Update at 2018.7.3:
+1. Add bomb into the game.
+
+## Last update at 2018.7.3
