@@ -1,6 +1,7 @@
 public class Bullet
 {
 	public int x, y, width = 75, length = 75;
+	public static int speed = 30;
 	public boolean alive;
 	public Bullet()
 	{
@@ -21,5 +22,13 @@ public class Bullet
 		if ((mid_x >= t.x) && (mid_x <= t.x + t.width) && (y >= t.y) && (y <= t.y + t.length))
 			return true;
 		return false;		
+	}
+	public boolean hit(Bomb t)
+	{
+		int mid_x = x + width / 2;
+		int mid_y = y + length / 2;
+		if ((mid_x >= t.x) && (mid_x <= t.x + t.width) && (y >= t.y) && (y <= t.y + t.length))
+			return true;
+		return false;			
 	}
 }

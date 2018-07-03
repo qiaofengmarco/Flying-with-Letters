@@ -1,11 +1,11 @@
 class TrieNode 
 {
     TrieNode[] arr;
-    public boolean isEnd;
-    // Initialize your data structure here.
+	public int id;
     public TrieNode() 
 	{
         this.arr = new TrieNode[26];
+		id = -1;
     } 
 }
  
@@ -13,55 +13,50 @@ public class Trie
 {
     private TrieNode root;
 	private TrieNode searchingNode;
+	private int num;
+	
     public Trie() 
 	{
         root = new TrieNode();
+		num = 0;
     }
  
     // Inserts a word into the trie.
     public void insert(String word) 
 	{
-		if (search(word))
-			return;
+		int index;
+		char c;
+		if (search(word) >= 0) return;
         TrieNode p = root;
         for(int i = 0; i < word.length(); i++)
 		{
-            char c = word.charAt(i);
-            int index = c -'a';
+            c = word.charAt(i);
+            index = c -'a';
             if (p.arr[index] == null)
 			{
                 TrieNode temp = new TrieNode();
-                p.arr[index]=temp;
+                p.arr[index] = temp;
                 p = temp;
             }
 			else
                 p = p.arr[index];
         }
-        p.isEnd = true;
+        p.id = num;
+		num++;
     }
  
     // Returns if the word is in the trie.
-    public boolean search(String word) 
+    public int search(String word) 
 	{
         TrieNode p = searchNode(word);
         if(p == null)
-            return false;
+            return -1;
         else
 		{
-            if(p.isEnd)
-                return true;
+            if(p.id >= 0)
+                return p.id;
         }
-        return false;
-    }
- 
-    // Returns if there is any word in the trie
-    // that starts with the given prefix.
-    public boolean startsWith(String prefix) 
-	{
-        TrieNode p = searchNode(prefix);
-        if(p == null)
-            return false;
-        return true;
+        return -1;
     }
  
     public TrieNode searchNode(String s)
@@ -80,24 +75,27 @@ public class Trie
             return null;
         return p;
     }
-	public int searching(String s)
+	
+	public int searching(char s)
 	{
-		int index = s.charAt(0) - 'a';
+		int index = s - 'a', id;
 		if (searchingNode == null)
 			searchingNode = root;
 		if (searchingNode.arr[index] != null)
 		{
 			searchingNode = searchingNode.arr[index];
-			if (searchingNode.isEnd)
+			if (searchingNode.id >= 0)
 			{
-				searchingNode = root;			
-				return 1;
+				id = searchingNode.id;
+				searchingNode = root;		
+				return id;
 			}
-			return 0;
+			return -1;
 		}
 		searchingNode = root;
-		return -1;
+		return -2;
 	}
+	
 	public String possibleNext()
 	{
 		String ans = "";
@@ -107,5 +105,15 @@ public class Trie
 			if (searchingNode.arr[i] != null)
 				ans += (char) (i + 'a');
 		return ans;
+	}
+	
+	public int size()
+	{
+		return num;
+	}
+	
+	public void resetNode()
+	{
+		searchingNode = root;
 	}
 }

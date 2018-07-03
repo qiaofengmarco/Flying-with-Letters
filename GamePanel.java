@@ -17,12 +17,14 @@ import java.awt.event.*;
 import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener
 {
-	public ArrayList<Target> targets = new ArrayList<Target>();
-	public ArrayList<String> words = new ArrayList<String>();
-	public ArrayList<Explosion> exps = new ArrayList<Explosion>();
+	private ArrayList<Target> targets = new ArrayList<Target>();
+	private ArrayList<Bomb> bombs = new ArrayList<Bomb>();
+	private ArrayList<String> words = new ArrayList<String>();
+	private ArrayList<Double> word_scale = new ArrayList<Double>();
+	private ArrayList<Explosion> exps = new ArrayList<Explosion>();
 	public String current_word = "";
 	public String current_char = "", correct_char = "";
-	public boolean word_change = false, isFirst = true, empty = true, fire = false, correct = false, wrong = false, wrong_empty = false;
+	public boolean word_change = false, isFirst = true, empty = true, fire = false, correct = false, wrong = false, wrong_empty = false, touch_bomb = false;
 	public int target_get = 0, target_loss = 0, counter = 0, wrong_time = 0, counter1 = 0;
 	public long score = 0;
 	public double correctness;
@@ -37,23 +39,32 @@ public class GamePanel extends JPanel implements ActionListener
 		int www = w - ww - 15;
 		if (isFirst || word_change)
 			nextWords = trie.possibleNext();
-		int select = 0;
+		int select = 0, TargetNum, BombNum = 0;
+		double randomTemp;
 		RepaintThread.target_counter++;	
-		int TargetNum;
 		HashSet<Integer> tg = new HashSet<Integer>();
-		if (RepaintThread.target_counter >= 60) 
+		HashSet<Integer> bm = new HashSet<Integer>();
+		if (RepaintThread.target_counter >= 30) 
 		{
-			if ((int)(Math.random() * 7) == 1)
+			randomTemp = Math.random();
+			if ((int)(randomTemp * 7) == 1)
 				TargetNum = 2;
 			else
 				TargetNum = 1;
-			int x = ((int)(Math.random() * w)) % www + ww / 2;
-			boolean flag1 = false;
+			if ((int)(randomTemp * 100) == 5)
+				BombNum = 2;
+			else if (((int)(randomTemp * 100) == 7) || ((int)(randomTemp * 100) == 9))
+				BombNum = 1;
+			else
+				BombNum = 0;
+			int x = 0;
+			boolean flag1 = false, flag2 = false;
 			while (TargetNum > 0)
 			{
 				flag1 = false;
-				x = ((int)(Math.random() * w)) % www + ww / 2;	
-				if (!tg.contains(new Integer(x)))
+				x = ((int)(Math.random() * w)) % www + ww / 2;
+				Integer x_temp = new Integer(x);
+				if ((tg.size() == 0) || (!tg.contains(x_temp)))
 				{
 					for (Integer x1: tg)
 					{
@@ -66,7 +77,7 @@ public class GamePanel extends JPanel implements ActionListener
 					if (!flag1)
 					{
 						TargetNum--;
-						tg.add(new Integer(x));
+						tg.add(x_temp);
 					}
 				}
 			}
@@ -78,36 +89,90 @@ public class GamePanel extends JPanel implements ActionListener
 						select = 0;
 					else
 						select = (int)(Math.random() * nextWords.length());
-					targets.add(new Target(x1, -60, nextWords.charAt(select)));
+					targets.add(new Target(x1.intValue(), -60, nextWords.charAt(select)));
 				}
 				else
-					targets.add(new Target(x1, -60, (char)(((int)(Math.random() * 26)) + 97)));
+					targets.add(new Target(x1.intValue(), -60, (char)(((int)(Math.random() * 26)) + 97)));
+			}
+			while (BombNum > 0)
+			{
+				flag2 = false;
+				x = ((int)(Math.random() * w)) % www + ww / 2;
+				Integer x_temp = new Integer(x);
+				if ((bm.size() == 0) || ((!tg.contains(x_temp)) && (!bm.contains(x_temp))))
+				{
+					for (Integer x1: tg)
+					{
+						if (((int)Math.abs(x1.intValue() - x)) < 40)
+						{
+							flag2 = true;
+							break;
+						}
+					}
+					for (Integer x1: bm)
+					{
+						if (((int)Math.abs(x1.intValue() - x)) < 40)
+						{
+							flag2 = true;
+							break;
+						}
+					}
+					if (!flag2)
+					{
+						BombNum--;
+						bm.add(x_temp);
+					}
+				}
+			}
+			for (Integer x1: bm)
+			{
+				bombs.add(new Bomb(x1, -60));
 			}
 			RepaintThread.target_counter = 0;
 			tg.clear();
+			bm.clear();
 		}	
 	}
 	public void targetDrop(Graphics g) 
 	{
 		Target t2;
+		Bomb b2;
 		String s;
+		Image image;
+		int height = getHeight();
 		for (Target t: targets) 
 		{
 			s = String.format("/image/%s.png", t.ch);
-			Image image = new ImageIcon(GamePanel.class.getResource(s)).getImage();
+			image = new ImageIcon(GamePanel.class.getResource(s)).getImage();
 			g.drawImage(image, t.x, t.y, 55, 55, this);
-			t.y += 3;
+			t.y += Target.speed;
 		}
 		for (int i = 0; i < targets.size(); i++)
 		{
 			t2 = targets.get(i);
-			if (t2.y >= getHeight())
+			if (t2.y >= height)
 			{
 				t2.alive = false;
 				targets.remove(t2);
 				i = 0;
 			}
 		}
+		for (Bomb b: bombs)
+		{
+			image = new ImageIcon(GamePanel.class.getResource("/image/bomb.png")).getImage();
+			g.drawImage(image, b.x, b.y, 60, 60, this);
+			b.y += Bomb.speed;
+		}
+		for (int i = 0; i < bombs.size(); i++)
+		{
+			b2 = bombs.get(i);
+			if (b2.y >= height)
+			{
+				b2.alive = false;
+				bombs.remove(b2);
+				i = 0;
+			}
+		}		
 	}
 	public void shoot(Graphics g) 
 	{
@@ -115,7 +180,7 @@ public class GamePanel extends JPanel implements ActionListener
 		RepaintThread.counter += 10;
 		Image missile = new ImageIcon(
 				GamePanel.class.getResource("/image/fire.png")).getImage();
-		if ((RepaintThread.counter > 120) && (fire)) 
+		if ((RepaintThread.counter > 80) && (fire)) 
 		{
 			Bullet b = new Bullet(GameFrame.gf.player.x + GameFrame.gf.player.width / 2 - 60 / 2,
 					GameFrame.gf.player.y - 60 / 2);
@@ -125,7 +190,7 @@ public class GamePanel extends JPanel implements ActionListener
 		for (Bullet b1: GameFrame.gf.player.bullets) 
 		{
 			g.drawImage(missile, b1.x, b1.y, 60, 60, this);
-			b1.y -= 20;
+			b1.y -= Bullet.speed;
 		}
 		for (int i = 0; i < GameFrame.gf.player.bullets.size(); i++)
 		{
@@ -163,9 +228,10 @@ public class GamePanel extends JPanel implements ActionListener
 	{
 		Bullet b2;
 		Target t2;
+		Bomb bm2;
 		Player p;
 		int pp;
-		if (correct || wrong)
+		if (correct || wrong || touch_bomb)
 		{
 			if (counter1 > 50)
 			{
@@ -173,6 +239,7 @@ public class GamePanel extends JPanel implements ActionListener
 				correct = false;
 				wrong = false;
 				wrong_empty = false;
+				touch_bomb = false;
 				counter1 = 0;
 				correct_char = "";
 				if (wrong_time > 0)
@@ -193,19 +260,48 @@ public class GamePanel extends JPanel implements ActionListener
 			isFirst = false;
 		
 		//eat the corret one?
+		Double this_scale;
 		p = GameFrame.gf.player;
-		if (targets.size() > 0)
+
+
+		createTarget();
+		targetDrop(g);
+		
+		//draw player
+		Image image = new ImageIcon(
+				GamePanel.class.getResource("/image/dragon.png"))
+				.getImage();
+		g.drawImage(image, p.x, p.y, 150, 120, this);
+				
+		shoot(g);
+		
+		if (bombs.size() > 0)
+		{
+			for (int i = 0; i < bombs.size(); i++)
+			{
+				bm2 = bombs.get(i);
+				if (p.eat(bm2))
+				{
+					touch_bomb = true;
+					bombs.remove(bm2);
+					break;
+				}
+			}
+		}
+		
+		if ((targets.size() > 0) && !(touch_bomb))
 		{
 			for (int i = 0; i < targets.size(); i++) 
 			{
 				t2 = targets.get(i);
 				if (p.eat(t2)) 
 				{
-					String s = String.valueOf(t2.ch);
-					pp = trie.searching(s);
-					if (pp == 1)
+					pp = trie.searching(t2.ch);
+					if (pp >= 0)
 					{
-						score += current_word.length() * 5;
+						this_scale = word_scale.get(pp);
+						score += (int) ((current_word.length() + 1) * 100 * this_scale.doubleValue());
+						word_scale.set(pp, this_scale.doubleValue() * 0.5);
 						correct_char = String.valueOf(t2.ch);
 						current_word = "";
 						current_char = "";
@@ -214,9 +310,9 @@ public class GamePanel extends JPanel implements ActionListener
 						wrong = false;
 						empty = true;
 					}
-					else if (pp == 0)
+					else if (pp == -1)
 					{
-						score += 5;
+						//score += 10;
 						current_word += t2.ch;
 						current_char = String.valueOf(t2.ch);
 						word_change = true;
@@ -224,12 +320,12 @@ public class GamePanel extends JPanel implements ActionListener
 						correct = false;
 						wrong = false;
 					}
-					else
+					else if (pp == -2)
 					{
-						if (score > 5 * current_word.length())
-							score -= 5 * current_word.length();
+						/*if (score > 10 * current_word.length())
+							score -= 10 * current_word.length();
 						else
-							score = 0;
+							score = 0;*/
 						if (current_word.equals(""))
 							wrong_empty = true;
 						current_word = "";
@@ -252,17 +348,51 @@ public class GamePanel extends JPanel implements ActionListener
 		//bullet hit?
 		for (Bullet b: p.bullets) 
 		{
+			for (Bomb b1: bombs)
+			{
+				if (touch_bomb || b.hit(b1))
+				{
+					b.alive = false;
+					b1.alive = false;
+					touch_bomb = true;
+					exps.add(new Explosion(b1.x - 5, b1.y + 6));
+				}
+			}
 			for (Target t: targets) 
 			{
-				if (b.hit(t)) 
+				if (touch_bomb)
 				{
 					b.alive = false;
 					t.alive = false;
-					score += 10;
+					exps.add(new Explosion(t.x - 5, t.y + 6));					
+				}
+				else if (b.hit(t)) 
+				{
+					b.alive = false;
+					t.alive = false;
 					exps.add(new Explosion(t.x - 5, t.y + 6));
 					break;
 				}
 			}
+		}
+		if ((p.bullets.size() == 0) && (touch_bomb))
+		{
+			for (Bomb b1: bombs)
+				exps.add(new Explosion(b1.x - 5, b1.y + 6));
+			for (Target t: targets) 
+				exps.add(new Explosion(t.x - 5, t.y + 6));					
+		}
+		if (touch_bomb)
+		{
+			current_word = "";
+			current_char = "";
+			word_change = true;
+			correct = false;
+			wrong = false;
+			empty = true;
+			trie.resetNode();
+			targets.clear();
+			bombs.clear();
 		}
 
 		//remove
@@ -284,17 +414,16 @@ public class GamePanel extends JPanel implements ActionListener
 				i = 0;
 			}
 		}
+		for (int i = 0; i < bombs.size(); i++)
+		{
+			bm2 = bombs.get(i);
+			if (!bm2.alive)
+			{
+				bombs.remove(bm2);
+				i = 0;
+			}
+		}
 		
-		createTarget();
-		targetDrop(g);
-		
-		//draw player
-		Image image = new ImageIcon(
-				GamePanel.class.getResource("/image/dragon.png"))
-				.getImage();
-		g.drawImage(image, p.x, p.y, 150, 120, this);
-				
-		shoot(g);
 	}
 	private class AnimationAction extends AbstractAction implements ActionListener
 	{
@@ -369,15 +498,25 @@ public class GamePanel extends JPanel implements ActionListener
 	{
 		trie = new Trie();
 		words.add("apple");
+		word_scale.add(new Double(1.0));
 		words.add("bananas");
+		word_scale.add(new Double(1.0));
 		words.add("fuck");
+		word_scale.add(new Double(1.0));
 		words.add("cat");
+		word_scale.add(new Double(1.0));
 		words.add("bob");
+		word_scale.add(new Double(1.0));
 		words.add("dad");
+		word_scale.add(new Double(1.0));
 		words.add("god");
+		word_scale.add(new Double(1.0));
 		words.add("dog");
+		word_scale.add(new Double(1.0));
 		words.add("bad");
+		word_scale.add(new Double(1.0));
 		words.add("flying");
+		word_scale.add(new Double(1.0));
 		for (String w: words)
 			trie.insert(w.toLowerCase());
 		setBackground(Color.WHITE);

@@ -20,12 +20,28 @@ public class WordPanel extends JPanel
 		Image image, image1;	
 		ImageIcon icon, icon1;
 		int wrong_time = GameFrame.gf.gp.wrong_time;
-		boolean empty = GameFrame.gf.gp.empty, isFirst = GameFrame.gf.gp.isFirst, change = GameFrame.gf.gp.word_change, correct = GameFrame.gf.gp.correct, wrong = 	GameFrame.gf.gp.wrong;
+		boolean empty = GameFrame.gf.gp.empty, isFirst = GameFrame.gf.gp.isFirst, change = GameFrame.gf.gp.word_change, correct = GameFrame.gf.gp.correct, wrong = 	GameFrame.gf.gp.wrong, touch_bomb = GameFrame.gf.gp.touch_bomb;
 		String s;
 		if ((!change) && (!isFirst))
 			return;
 		removeAll();
-		if (correct)
+		if (touch_bomb)
+		{
+			int lb_size = labels.size();
+			labels.clear();
+			for (int i = 0; i < lb_size; i++)
+			{
+				image = new ImageIcon(WordPanel.class.getResource("/word/wrong.png")).getImage();	
+				label = new JLabel();
+				icon = new ImageIcon(image);
+				icon.setImage(image.getScaledInstance(45, 45, Image.SCALE_FAST));
+				label.setIcon(icon);
+				label.setText(null);
+				label.setSize(45, 45);
+				labels.add(label);
+			}
+		}
+		else if (correct)
 		{
 			char ch = GameFrame.gf.gp.correct_char.charAt(0);
 			s = String.format("/word/%s.jpg", ch);

@@ -9,11 +9,10 @@ public class ResultFrame extends JFrame
 	JLabel label1, label2;
 	JPanel p = new JPanel(), p1 = new JPanel(), p2 = new JPanel();
 	long current = GameFrame.gf.gp.score, best = 0, newBest = 0;
-	private File dir, f;
+	private File f;
 	public ResultFrame()
 	{
-		dir = new File("");
-		f = new File(dir, "Bst.txt");
+		f = new File("./BestScore.txt");
 		if (!f.exists())
 		{
 			best = 0;

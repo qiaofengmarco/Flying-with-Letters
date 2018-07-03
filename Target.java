@@ -1,6 +1,7 @@
 public class Target 
 {
 	public int x, y, width = 55, length = 55;
+	public static int speed = 6;
 	public char ch;
 	public boolean alive;
 	public Target()
