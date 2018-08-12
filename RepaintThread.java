@@ -16,7 +16,7 @@ public class RepaintThread extends Thread
 				GameFrame.gf.big.repaint();
 				try 
 				{
-					Thread.sleep(20);
+					Thread.sleep(15);
 				} 
 				catch (Exception e) 
 				{
