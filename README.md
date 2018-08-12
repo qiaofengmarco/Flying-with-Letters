@@ -14,6 +14,7 @@
 1. The portal of codes (i.e. main function) is in GameFrame.java. 
 2. GameFrame.java is the main UI design file, GamePanel.java is the main game panel.
 3. And because the game comes from a small part of my final project, so few words are added: apple, bananas, bad, cat, bob, flying, god, dad, f-word.
+4. UI Structure: Red: WordPanel; Green: TimePanel; Blue: GradePanel; Khaki: GamePanel;
 
 ## Update at 2017.6.21:
 1. Update the score board
